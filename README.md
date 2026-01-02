@@ -29,7 +29,16 @@ The landing zone follows a **Hub-and-Spoke architecture**:
 - **Spoke VNets** for application and development workloads
 - Centralized governance and monitoring
 
-📌 Architecture diagram will be added under `/architecture`.
+The solution follows a **Hub-and-Spoke architecture** aligned with Microsoft Azure Landing Zone (Enterprise-Scale) best practices.
+
+![Azure Secure Landing Zone Architecture](architecture/azure-secure-landing-zone-architecture.png)
+
+### Architecture Highlights
+- Subscription-level governance using **Azure Policy**
+- **Management Resource Group** for centralized Log Analytics
+- **Hub VNet** for shared connectivity
+- **Spoke VNet** for application workloads
+- Secure **VNet peering** between Hub and Spoke
 
 ---
 ## Monitoring & Observability
