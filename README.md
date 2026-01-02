@@ -18,6 +18,8 @@ Solution Architect–level skills, including governance, networking, security, a
 - Design a hub-and-spoke networking architecture
 - Enable centralized monitoring and observability
 - Demonstrate Azure CLI–driven deployments with real proof
+- Enforce CIS Microsoft Azure Foundations Benchmark using Azure Policy
+
 
 ---
 
@@ -30,6 +32,54 @@ The landing zone follows a **Hub-and-Spoke architecture**:
 📌 Architecture diagram will be added under `/architecture`.
 
 ---
+## Monitoring & Observability
+
+Centralized monitoring is implemented as part of the Secure Landing Zone to ensure visibility,
+auditability, and operational readiness across all environments.
+
+### Log Analytics Workspace
+- Central Log Analytics workspace deployed in the **management resource group**
+- Workspace serves as a centralized log sink for:
+  - Activity logs
+  - Diagnostic logs
+  - Future workload monitoring
+- Retention configured to support audit and compliance requirements
+
+### Design Rationale
+- Separates monitoring resources from workload subscriptions
+- Aligns with Azure Landing Zone enterprise-scale best practices
+- Enables future integration with:
+  - Azure Monitor
+  - Azure Defender for Cloud
+  - Sentinel (SIEM)
+
+### Implementation
+- Monitoring resources are deployed using Azure CLI
+- Script-based deployment ensures repeatability and consistency
+
+Relevant deployment scripts and validation screenshots are included in the repository.
+
+---
+## Security & Governance Baseline (CIS)
+This landing zone enforces a security-first governance model using **Azure Policy** aligned with the  
+**CIS Microsoft Azure Foundations Benchmark v2.0.0**.
+
+The CIS benchmark is assigned at the **subscription scope** to ensure consistent security controls
+are applied across all current and future resources.
+
+### Key Governance Controls
+- CIS Microsoft Azure Foundations Benchmark v2.0.0 (built-in initiative)
+- Subscription-level policy assignment
+- System-assigned managed identity for remediation readiness
+- Governance enforced *before* workload deployment (shift-left security)
+
+### Compliance State
+- Initial compliance shows **100% (0/0 resources)**, which is expected for a newly provisioned landing zone
+- No non-compliant initiatives or policies detected
+- Demonstrates proactive governance before onboarding workloads
+
+Evidence of policy assignment and compliance is captured in the `evidence-screenshots/` directory.
+
 
 ## Scope of Implementation
 ### Included
@@ -57,5 +107,24 @@ All resources are deployed using:
 Deployment scripts will be available under `/cli-scripts`.
 
 ---
+### Monitoring (CLI)
 
-## Repository Structure
+- `04-monitoring-log-analytics.ps1`  
+  Deploys a centralized Log Analytics workspace for enterprise monitoring and security insights.
+
+---
+### Governance & Compliance (CLI)
+
+- `05b-assign-security-benchmark.ps1`  
+  Assigns the CIS Microsoft Azure Foundations Benchmark v2.0.0 at subscription scope using Azure CLI.
+
+---
+## Evidence & Validation
+
+| Control | Evidence |
+|------|--------|
+| Log Analytics Workspace | `evidence-screenshots/04-log-analytics-workspace.png` |
+| CIS Policy Assignment | `evidence-screenshots/08-policy-assignment-portal.png` |
+| CIS Compliance Status | `evidence-screenshots/09-policy-compliance-cis-baseline.png` |
+
+
