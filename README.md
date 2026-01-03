@@ -21,23 +21,74 @@ Solution Architect–level skills, including governance, networking, security, a
 
 All scripts were executed using **Azure Cloud Shell (PowerShell)**.
 
-1. Login to Azure:
-```bash
-az login
-2.az account set --subscription "<your-subscription-id>"
-3.cd cli-scripts
-4.Run scripts in order:
-- 01-resource-groups.ps1
-- 02-core-network-vnet-subnets.ps1
-- 03-network-security-groups.ps1
-- 04-log-analytics-workspace.ps1
-- 05-azure-policy-cis.ps1
-5.Verify deployment:
-Azure Portal → Resource Groups
-Azure Portal → Policy → Assignments
-Azure Portal → Log Analytics Workspace
-6: Add Verification Section (Enterprise Touch)
-```md
+Step 1: Prerequisites & Environment Setup
+Requirements
+
+-Ensure the following are available before running the project:
+-An active Azure subscription
+-Azure CLI installed
+-PowerShell (Cloud Shell or local)
+-Contributor access on the Azure subscription
+-Git (optional, for cloning the repo)
+
+Verify Azure CLI Login
+az login 
+
+Confirm the correct subscription is selected:
+az account show -o table
+
+If needed, set the target subscription:
+az account set --subscription <SUBSCRIPTION_ID>
+
+Step 2: Create Core Resource Groups (Foundation Layer)
+This step establishes logical isolation between networking, compute, and monitoring resources — aligned with enterprise landing zone best practices.
+
+Script Used
+cli-scripts/01-resource-groups.ps1
+
+What this step creates
+| Resource Group         | Purpose                                             |
+| ---------------------- | --------------------------------------------------- |
+| `rg-swa-zt-network`    | Networking resources (VNet, subnets, NSGs)          |
+| `rg-swa-zt-compute`    | Application and compute resources                   |
+| `rg-swa-zt-monitoring` | Centralized monitoring (Log Analytics, diagnostics) |
+
+Run the script
+cd cli-scripts
+.\01-resource-groups.ps1
+
+Verification
+az group list -o table
+
+You should see all three resource groups in East US.
+
+Step 3: Create Virtual Network & Subnets (Zero Trust Network Design)
+This step creates a secure VNet architecture that enforces isolation between web, app, data, and private endpoints.
+
+Script used
+cli-scripts/02-network-vnet-subnets.ps1
+
+Network Design
+| Subnet Name                | Address Space | Purpose                         |
+| -------------------------- | ------------- | ------------------------------- |
+| `subnet-web`               | `10.0.1.0/24` | Internet-facing tier            |
+| `subnet-app`               | `10.0.2.0/24` | Application tier                |
+| `subnet-data`              | `10.0.3.0/24` | Backend / data services         |
+| `subnet-private-endpoints` | `10.0.4.0/24` | Private Link & PaaS integration |
+
+
+Private Endpoint network policies are disabled on the private endpoint subnet to support Azure Private Link.
+
+Run the script
+.\02-network-vnet-subnets.ps1
+
+Verification
+az network vnet subnet list \
+  -g rg-swa-zt-network \
+  --vnet-name vnet-swa-zt-core \
+  -o table
+
+Expected output: all four subnets listed with correct CIDR ranges.
 
 ---
 ## Tools Used
@@ -134,6 +185,7 @@ are applied across all current and future resources.
 
 ### Compliance State
 - Initial compliance shows **100% (0/0 resources)**, which is expected for a newly provisioned landing zone
+- Compliance will populate once workload resources exist and policies evaluate them
 - No non-compliant initiatives or policies detected
 - Demonstrates proactive governance before onboarding workloads
 
