@@ -10,6 +10,57 @@ This repository serves as a **practical, hands-on proof project** showcasing Azu
 Solution Architect–level skills, including governance, networking, security, and monitoring.
 
 ---
+## Prerequisites
+
+- Azure subscription
+- Owner or Contributor role on the subscription
+- Azure CLI installed **or** Azure Cloud Shell (PowerShell)
+- Basic knowledge of Azure networking and governance
+
+## How to Run (CLI)
+
+All scripts were executed using **Azure Cloud Shell (PowerShell)**.
+
+1. Login to Azure:
+```bash
+az login
+2.az account set --subscription "<your-subscription-id>"
+3.cd cli-scripts
+4.Run scripts in order:
+- 01-resource-groups.ps1
+- 02-core-network-vnet-subnets.ps1
+- 03-network-security-groups.ps1
+- 04-log-analytics-workspace.ps1
+- 05-azure-policy-cis.ps1
+5.Verify deployment:
+Azure Portal → Resource Groups
+Azure Portal → Policy → Assignments
+Azure Portal → Log Analytics Workspace
+6: Add Verification Section (Enterprise Touch)
+```md
+
+---
+## Tools Used
+
+- Azure CLI
+- Azure Cloud Shell (PowerShell)
+- Azure Policy
+- Azure Network Watcher
+- Log Analytics Workspace
+
+---
+## Validation & Evidence
+
+- Verified all Resource Groups show `ProvisioningState = Succeeded`
+- Confirmed VNet and subnet CIDR ranges via Azure CLI
+- Validated NSG attachment to each subnet
+- Confirmed Log Analytics retention policy
+- Azure Policy assignment visible at subscription scope
+- Policy compliance page available for ongoing evaluation
+
+Screenshots are available in the `evidence-screenshots/` directory.
+
+---
 
 ## Objectives
 - Establish a secure and scalable Azure foundation
