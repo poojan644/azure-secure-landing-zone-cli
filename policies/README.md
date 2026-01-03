@@ -1,7 +1,11 @@
-# Policies
-Custom Azure Policy definitions and initiatives will be stored here.
+## Azure Policy
 
-Planned:
-- Deny Public IP on NICs (custom policy)
-- Enforce tagging (environment, owner, costCenter)
+This folder documents governance controls applied to the landing zone.
+
+- CIS Microsoft Azure Foundations Benchmark (Built-in Initiative)
+- Assigned at subscription scope
+- Enforces security baseline across identity, networking, logging, and resource configuration
+
+No custom policies were uploaded; built-in initiatives were intentionally used to align with enterprise best practices.
+
 
