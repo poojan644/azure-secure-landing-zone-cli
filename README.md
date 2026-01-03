@@ -1,4 +1,3 @@
-# azure-secure-landing-zone-cli
 # Azure Secure Landing Zone (CLI-Based Implementation)
 
 ## Overview
